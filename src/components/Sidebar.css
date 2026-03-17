@@ -1,0 +1,165 @@
+.sidebar {
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.dark .sidebar {
+  background: #1f2937;
+  border-right-color: #374151;
+}
+
+.sidebar-header {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dark .sidebar-header {
+  border-bottom-color: #374151;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dark .sidebar-header h2 {
+  color: #9ca3af;
+}
+
+.sidebar-nav {
+  padding: 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+}
+
+.sidebar-item:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+.dark .sidebar-item {
+  color: #d1d5db;
+}
+
+.dark .sidebar-item:hover {
+  background: #374151;
+  color: #f9fafb;
+}
+
+.sidebar-item.active {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.dark .sidebar-item.active {
+  background: #1e3a8a;
+  color: #93c5fd;
+}
+
+.sidebar-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.sidebar-item.active .sidebar-item-icon {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark .sidebar-item-icon {
+  background: #374151;
+  color: #9ca3af;
+}
+
+.dark .sidebar-item.active .sidebar-item-icon {
+  background: #2563eb;
+  color: white;
+}
+
+.sidebar-item-content {
+  flex: 1;
+  text-align: left;
+}
+
+.sidebar-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.sidebar-item-description {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.dark .sidebar-item-description {
+  color: #9ca3af;
+}
+
+.sidebar-item.active .sidebar-item-description {
+  color: #1e40af;
+}
+
+.dark .sidebar-item.active .sidebar-item-description {
+  color: #60a5fa;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #f3f4f6;
+  margin-top: auto;
+}
+
+.dark .sidebar-footer {
+  border-top-color: #374151;
+}
+
+.sidebar-info {
+  text-align: center;
+}
+
+.sidebar-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.sidebar-info .version {
+  margin-top: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.dark .sidebar-info p {
+  color: #6b7280;
+}

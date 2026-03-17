@@ -1,0 +1,33 @@
+.graph-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e8ed;
+}
+
+.chart-container {
+  position: relative;
+  transition: opacity 0.3s ease;
+  height: 400px;
+  width: 100%;
+}
+
+.graph-panel.updating .chart-container {
+  opacity: 0.6;
+}
+
+.graph-panel.updating h2 {
+  color: #9ca3af;
+}
+
+.no-data {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #95a5a6;
+  font-size: 16px;
+  border: 2px dashed #e1e8ed;
+  border-radius: 8px;
+}

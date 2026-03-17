@@ -1,0 +1,148 @@
+.explanation-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e8ed;
+  text-align: left;
+}
+
+.explanation-panel h2 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.dark .explanation-panel h2 {
+  color: #f9fafb;
+}
+
+.ai-section {
+  margin: 24px 0;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+  background: #f8fafc;
+}
+
+.dark .ai-section {
+  background: #1e293b;
+  border-left-color: #60a5fa;
+}
+
+.ai-section.concept-insight {
+  border-left-color: #8b5cf6;
+}
+
+.dark .ai-section.concept-insight {
+  border-left-color: #a78bfa;
+}
+
+.ai-section.real-world {
+  border-left-color: #10b981;
+}
+
+.dark .ai-section.real-world {
+  border-left-color: #34d399;
+}
+
+.ai-section.common-mistakes {
+  border-left-color: #f59e0b;
+}
+
+.dark .ai-section.common-mistakes {
+  border-left-color: #fbbf24;
+}
+
+.ai-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dark .ai-section h3 {
+  color: #f9fafb;
+}
+
+.ai-section p {
+  margin: 0 0 12px 0;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.dark .ai-section p {
+  color: #d1d5db;
+}
+
+.ai-section ul {
+  margin: 12px 0;
+  padding-left: 20px;
+}
+
+.ai-section li {
+  margin: 8px 0;
+  color: #4b5563;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.dark .ai-section li {
+  color: #d1d5db;
+}
+
+.ai-section strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.dark .ai-section strong {
+  color: #f9fafb;
+}
+
+.explanation-panel h3 {
+  margin: 20px 0 10px 0;
+  color: #34495e;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.circuit-params ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.circuit-params li {
+  margin: 8px 0;
+  color: #5a6c7d;
+  line-height: 1.4;
+}
+
+.physics-explanation,
+.exponential-explanation,
+.time-constant-explanation {
+  margin: 20px 0;
+}
+
+.physics-explanation p,
+.exponential-explanation p,
+.time-constant-explanation p {
+  margin: 8px 0;
+  color: #5a6c7d;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.no-data {
+  padding: 40px 20px;
+  text-align: center;
+  color: #95a5a6;
+  font-size: 16px;
+  border: 2px dashed #e1e8ed;
+  border-radius: 8px;
+}
