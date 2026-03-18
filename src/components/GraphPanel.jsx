@@ -26,24 +26,14 @@ ChartJS.register(
 
 const GraphPanel = ({ data }) => {
   const [isUpdating, setIsUpdating] = useState(false);
+  
   if (!data) {
     return (
       <div className={`graph-panel ${isUpdating ? 'updating' : ''}`}>
         <h2>Experiment Results</h2>
-        {data ? (
-          <div className="chart-container">
-            <ChartComponent 
-              data={chartData} 
-              options={options} 
-              updateMode="resize"
-              onAnimationComplete={triggerUpdateAnimation}
-            />
-          </div>
-        ) : (
-          <div className="no-data">
-            <p>Run a simulation to see the results</p>
-          </div>
-        )}
+        <div className="no-data">
+          <p>Run a simulation to see the results</p>
+        </div>
       </div>
     );
   }
@@ -77,15 +67,16 @@ const GraphPanel = ({ data }) => {
         {
           label: 'Voltage (V)',
           data: data.data,
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          borderWidth: 3,
-          pointRadius: 2,
-          pointHoverRadius: 6,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59, 130, 246, 0.2)',
+          borderWidth: 4,
+          pointRadius: 3,
+          pointHoverRadius: 8,
           tension: 0.4,
-          pointBackgroundColor: '#10b981',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
+          pointBackgroundColor: '#3b82f6',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 3,
+          fill: true,
         },
       ],
     };
@@ -94,12 +85,12 @@ const GraphPanel = ({ data }) => {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 2000,
+        duration: 2500,
         easing: 'easeInOutQuart',
         delay: (context) => {
           let delay = 0;
           if (context.type === 'data' && context.mode === 'default') {
-            delay = context.dataIndex * 20;
+            delay = context.dataIndex * 15;
           }
           return delay;
         },
@@ -109,16 +100,18 @@ const GraphPanel = ({ data }) => {
           display: true,
           position: 'top',
           labels: {
-            font: { size: 14, weight: '500' },
+            font: { size: 16, weight: '600' },
             color: '#374151',
             padding: 20,
             usePointStyle: true,
+            pointStyle: 'circle',
+            pointRadius: 6,
           }
         },
         title: {
           display: true,
           text: 'Voltage vs Time',
-          font: { size: 18, weight: '600' },
+          font: { size: 20, weight: '700' },
           color: '#111827',
           padding: { top: 10, bottom: 20 }
         },
@@ -127,13 +120,15 @@ const GraphPanel = ({ data }) => {
           mode: 'index',
           intersect: false,
           backgroundColor: 'rgba(17, 24, 39, 0.95)',
-          titleColor: '#fff',
-          bodyColor: '#fff',
-          borderColor: '#10b981',
-          borderWidth: 1,
-          cornerRadius: 8,
-          padding: 12,
-          displayColors: false,
+          titleColor: '#ffffff',
+          bodyColor: '#ffffff',
+          borderColor: '#3b82f6',
+          borderWidth: 2,
+          cornerRadius: 12,
+          padding: 16,
+          displayColors: true,
+          titleFont: { size: 14, weight: '600' },
+          bodyFont: { size: 13 },
           callbacks: {
             title: function(context) {
               return `Time: ${context[0].label} ms`;
@@ -147,31 +142,34 @@ const GraphPanel = ({ data }) => {
       scales: {
         x: {
           display: true,
-          title: { display: true, text: 'Time (ms)', color: '#374151', font: { size: 14, weight: '500' } },
+          title: { display: true, text: 'Time (ms)', color: '#374151', font: { size: 16, weight: '600' } },
           grid: { 
-            color: 'rgba(156, 163, 175, 0.2)',
+            color: 'rgba(156, 163, 175, 0.3)',
             drawBorder: false,
             lineWidth: 1,
+            borderDash: [5, 5],
           },
           ticks: { 
             color: '#6b7280',
-            font: { size: 12 },
+            font: { size: 13 },
             maxRotation: 0,
             autoSkip: true,
-            maxTicksLimit: 10
+            maxTicksLimit: 10,
+            padding: 8
           },
         },
         y: {
           display: true,
-          title: { display: true, text: 'Voltage (V)', color: '#374151', font: { size: 14, weight: '500' } },
+          title: { display: true, text: 'Voltage (V)', color: '#374151', font: { size: 16, weight: '600' } },
           grid: { 
-            color: 'rgba(156, 163, 175, 0.2)',
+            color: 'rgba(156, 163, 175, 0.3)',
             drawBorder: false,
             lineWidth: 1,
+            borderDash: [5, 5],
           },
           ticks: { 
             color: '#6b7280',
-            font: { size: 12 },
+            font: { size: 13 },
             min: 0,
             max: 6,
             padding: 8
@@ -478,7 +476,8 @@ const GraphPanel = ({ data }) => {
   const { chartData, options, ChartComponent } = getChartConfig();
 
   return (
-    <div className="graph-panel">
+    <div className={`graph-panel ${isUpdating ? 'updating' : ''}`}>
+      <h2>Experiment Results</h2>
       <div className="chart-container">
         <ChartComponent data={chartData} options={options} />
       </div>

@@ -28,7 +28,7 @@ function AppContent() {
       const demoData = {
         labels: Array.from({length: 100}, (_, i) => (i * 0.1).toFixed(1)),
         datasets: [{
-          label: 'Voltage',
+          label: 'Voltage (V)',
           data: Array.from({length: 100}, (_, i) => {
             const t = i * 0.001; // 0 to 0.1 seconds
             const V0 = 5; // 5V step input
@@ -36,8 +36,15 @@ function AppContent() {
             return V0 * (1 - Math.exp(-t / tau));
           }),
           borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          tension: 0.1
+          backgroundColor: 'rgba(59, 130, 246, 0.2)',
+          borderWidth: 4,
+          pointRadius: 3,
+          pointHoverRadius: 8,
+          tension: 0.4,
+          pointBackgroundColor: '#3b82f6',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 3,
+          fill: true,
         }],
         chartType: 'voltage',
         circuitParams: {
