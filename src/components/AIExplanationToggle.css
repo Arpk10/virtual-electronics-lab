@@ -1,0 +1,388 @@
+.ai-explanation-toggle {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dark .ai-explanation-toggle {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.ai-toggle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.ai-toggle-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .ai-toggle-info h4 {
+  color: #f9fafb;
+}
+
+.ai-toggle-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.dark .ai-toggle-info p {
+  color: #9ca3af;
+}
+
+.ai-toggle-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.level-selector {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+.dark .level-selector {
+  background: #374151;
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+.explain-btn {
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.explain-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.explain-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.api-key-input {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.dark .api-key-input {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.api-key-input h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .api-key-input h5 {
+  color: #f9fafb;
+}
+
+.api-key-input p {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.dark .api-key-input p {
+  color: #9ca3af;
+}
+
+.api-key-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.api-key-field {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.dark .api-key-field {
+  background: #1f2937;
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+.api-key-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-key-btn {
+  padding: 8px 16px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-key-btn:hover {
+  background: #059669;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #4b5563;
+}
+
+.api-key-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.dark .api-key-note {
+  color: #9ca3af;
+}
+
+.api-key-note a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.api-key-note a:hover {
+  text-decoration: underline;
+}
+
+.ai-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.dark .ai-status {
+  background: #14532d;
+  border-color: #166534;
+}
+
+.status-indicator {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-indicator.configured {
+  color: #166534;
+}
+
+.dark .status-indicator.configured {
+  color: #86efac;
+}
+
+.remove-key-btn {
+  padding: 4px 8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.remove-key-btn:hover {
+  background: #dc2626;
+}
+
+.ai-explanation-content {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.dark .ai-explanation-content {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.explanation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.explanation-header h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .explanation-header h5 {
+  color: #f9fafb;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.collapse-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.dark .collapse-btn:hover {
+  background: #4b5563;
+  color: #d1d5db;
+}
+
+.explanation-text {
+  color: #374151;
+  line-height: 1.6;
+}
+
+.dark .explanation-text {
+  color: #d1d5db;
+}
+
+.explanation-text p {
+  margin: 0 0 12px 0;
+}
+
+.explanation-text p:last-child {
+  margin-bottom: 0;
+}
+
+.explanation-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .explanation-footer {
+  border-top-color: #4b5563;
+}
+
+.ai-disclaimer {
+  color: #6b7280;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.dark .ai-disclaimer {
+  color: #9ca3af;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .ai-toggle-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .ai-toggle-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .level-selector {
+    flex: 1;
+  }
+  
+  .explain-btn {
+    flex-shrink: 0;
+  }
+  
+  .api-key-actions {
+    flex-direction: column;
+  }
+  
+  .save-key-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+
+/* Loading animation */
+.explain-btn:disabled {
+  position: relative;
+}
+
+.explain-btn:disabled::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

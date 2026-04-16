@@ -1,0 +1,372 @@
+.circuit-diagram {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.dark .circuit-diagram {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.diagram-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.diagram-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dark .diagram-header h3 {
+  color: #f9fafb;
+}
+
+.circuit-type {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dark .circuit-type {
+  color: #9ca3af;
+}
+
+.diagram-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.dark .diagram-container {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.circuit-svg {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.dark .circuit-svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.no-circuit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #6b7280;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.dark .no-circuit {
+  color: #9ca3af;
+}
+
+/* Component styling */
+.circuit-svg text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+}
+
+.circuit-svg .component-label {
+  font-weight: 600;
+  fill: #111827;
+}
+
+.dark .circuit-svg .component-label {
+  fill: #f9fafb;
+}
+
+.circuit-svg .component-value {
+  font-size: 10px;
+  fill: #6b7280;
+}
+
+.dark .circuit-svg .component-value {
+  fill: #9ca3af;
+}
+
+/* Interactive hover effects */
+.circuit-svg path:hover,
+.circuit-svg line:hover,
+.circuit-svg circle:hover {
+  stroke: #3b82f6;
+  transition: stroke 0.2s ease;
+  cursor: pointer;
+}
+
+.circuit-svg text:hover {
+  fill: #3b82f6;
+  transition: fill 0.2s ease;
+  cursor: pointer;
+}
+
+/* Animation for circuit current flow */
+@keyframes current-flow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -20;
+  }
+}
+
+.circuit-svg .wire-active {
+  stroke: #3b82f6;
+  stroke-dasharray: 5, 5;
+  animation: current-flow 1s linear infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .circuit-diagram {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .diagram-header h3 {
+    font-size: 16px;
+  }
+  
+  .circuit-type {
+    font-size: 12px;
+  }
+  
+  .diagram-container {
+    padding: 16px;
+    min-height: 150px;
+  }
+  
+  .circuit-svg text {
+    font-size: 11px;
+  }
+  
+  .circuit-svg .component-value {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .circuit-diagram {
+    padding: 12px;
+  }
+  
+  .diagram-container {
+    padding: 12px;
+    min-height: 120px;
+  }
+  
+  .circuit-svg text {
+    font-size: 10px;
+  }
+  
+  .circuit-svg .component-value {
+    font-size: 8px;
+  }
+}
+
+/* Dark mode specific styling */
+.dark .circuit-svg path,
+.dark .circuit-svg line,
+.dark .circuit-svg circle {
+  stroke: #d1d5db;
+}
+
+.dark .circuit-svg .component-label {
+  fill: #f9fafb;
+}
+
+.dark .circuit-svg .component-value {
+  fill: #9ca3af;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .circuit-svg path,
+  .circuit-svg line,
+  .circuit-svg circle {
+    stroke: #000000;
+    stroke-width: 3;
+  }
+  
+  .circuit-svg text {
+    fill: #000000;
+    font-weight: bold;
+  }
+  
+  .dark .circuit-svg path,
+  .dark .circuit-svg line,
+  .dark .circuit-svg circle {
+    stroke: #ffffff;
+  }
+  
+  .dark .circuit-svg text {
+    fill: #ffffff;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .circuit-svg .wire-active {
+    animation: none;
+  }
+  
+  .circuit-svg path:hover,
+  .circuit-svg line:hover,
+  .circuit-svg circle:hover {
+    transition: none;
+  }
+  
+  .circuit-svg text:hover {
+    transition: none;
+  }
+}
+
+/* Interactive component highlighting */
+.circuit-component {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.circuit-component.highlighted .component-path {
+  stroke: #3b82f6;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4));
+}
+
+.circuit-component.highlighted .component-label,
+.circuit-component.highlighted .component-value {
+  fill: #3b82f6;
+  font-weight: bold;
+}
+
+/* Node highlighting */
+.circuit-node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.circuit-node.highlighted .node-circle {
+  stroke: #3b82f6;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));
+}
+
+.circuit-node .node-circle {
+  transition: all 0.2s ease;
+}
+
+/* Current flow animation */
+.current-flow-dot {
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.8));
+  opacity: 0.8;
+}
+
+/* Tooltip */
+.circuit-tooltip {
+  position: fixed;
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #374151;
+  white-space: nowrap;
+}
+
+.dark .circuit-tooltip {
+  background: #111827;
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+/* Component hover effects */
+.circuit-component:hover .component-path {
+  stroke: #3b82f6;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4));
+}
+
+.circuit-component:hover .component-label,
+.circuit-component:hover .component-value {
+  fill: #3b82f6;
+  font-weight: bold;
+}
+
+.circuit-node:hover .node-circle {
+  stroke: #3b82f6;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.6));
+}
+
+/* Voltage display animation */
+.circuit-node text {
+  transition: all 0.2s ease;
+}
+
+.circuit-node:hover text {
+  fill: #3b82f6;
+  font-weight: bold;
+}
+
+/* Dark mode specific styles for interactive elements */
+.dark .circuit-component.highlighted .component-path {
+  stroke: #60a5fa;
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.4));
+}
+
+.dark .circuit-component.highlighted .component-label,
+.dark .circuit-component.highlighted .component-value {
+  fill: #60a5fa;
+}
+
+.dark .circuit-node.highlighted .node-circle {
+  stroke: #60a5fa;
+  filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.6));
+}
+
+.dark .circuit-component:hover .component-path {
+  stroke: #60a5fa;
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.4));
+}
+
+.dark .circuit-component:hover .component-label,
+.dark .circuit-component:hover .component-value {
+  fill: #60a5fa;
+}
+
+.dark .circuit-node:hover .node-circle {
+  stroke: #60a5fa;
+  filter: drop-shadow(0 0 6px rgba(96, 165, 250, 0.6));
+}
+
+/* Responsive tooltip */
+@media (max-width: 768px) {
+  .circuit-tooltip {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}

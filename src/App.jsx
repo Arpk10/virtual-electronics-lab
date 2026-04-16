@@ -10,6 +10,9 @@ import GraphPanel from './components/GraphPanel';
 import ExplanationPanel from './components/ExplanationPanel';
 import ResultsSummary from './components/ResultsSummary';
 import PricingModal from './components/PricingModal';
+import CircuitDiagram from './components/CircuitDiagram.jsx';
+import { simulateStructuredCircuit, CIRCUIT_TYPES, SIMULATION_MODES } from './engine';
+import { combineSimulations } from './visualization';
 import './App.css';
 
 function AppContent() {
@@ -25,42 +28,29 @@ function AppContent() {
   // Auto-run demo on page load
   useEffect(() => {
     const runDemoSimulation = () => {
-      const demoData = {
-        labels: Array.from({length: 100}, (_, i) => (i * 0.1).toFixed(1)),
-        datasets: [{
-          label: 'Voltage (V)',
-          data: Array.from({length: 100}, (_, i) => {
-            const t = i * 0.001; // 0 to 0.1 seconds
-            const V0 = 5; // 5V step input
-            const tau = 1000 * 10e-6; // R=1000, C=10uF
-            return V0 * (1 - Math.exp(-t / tau));
-          }),
-          borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.2)',
-          borderWidth: 4,
-          pointRadius: 3,
-          pointHoverRadius: 8,
-          tension: 0.4,
-          pointBackgroundColor: '#3b82f6',
-          pointBorderColor: '#ffffff',
-          pointBorderWidth: 3,
-          fill: true,
-        }],
-        chartType: 'voltage',
-        circuitParams: {
-          experimentType: 'rc',
-          resistance: 1000,
-          capacitance: 10e-6,
-          simulationType: 'charging',
-          timeConstant: 1000 * 10e-6,
-          V0: 5,
-          maxTime: 0.1,
-          isDemo: true
+      // Create demo voltage divider circuit
+      const demoCircuit = {
+        type: CIRCUIT_TYPES.VOLTAGE_DIVIDER,
+        mode: SIMULATION_MODES.CHARGING,
+        components: {
+          Vin: 12,     // 12V
+          R1: 1000,    // 1k
+          R2: 2000     // 2k
         }
       };
-      
-      setSimulationData(demoData);
-      setCircuitParams(demoData.circuitParams);
+
+      try {
+        const demoData = simulateStructuredCircuit(demoCircuit);
+        // Mark as demo for pricing logic
+        demoData.circuitParams.isDemo = true;
+        demoData.circuitParams.experimentType = 'voltage-divider';
+        
+        setSimulationData(demoData);
+        setCircuitParams(demoData.circuitParams);
+        setActiveExperiment('voltage-divider');
+      } catch (error) {
+        console.error('Demo simulation error:', error);
+      }
     };
 
     // Run demo after a short delay to ensure components are mounted
@@ -91,7 +81,7 @@ function AppContent() {
           };
           setSimulations(prev => [...prev, newSimulation]);
           
-          // Update chart data for comparison
+          // Update chart data for comparison using new visualization layer
           const combinedData = combineSimulations([...simulations, newSimulation]);
           setSimulationData(combinedData);
           setCircuitParams(combinedData.circuitParams);
@@ -110,36 +100,7 @@ function AppContent() {
     }
   };
 
-  const combineSimulations = (simList) => {
-    if (simList.length === 0) return null;
-    
-    // Use the first simulation's labels as base
-    const baseLabels = simList[0].labels;
-    const datasets = simList.map((sim, index) => ({
-      label: getSimulationLabel(sim, index),
-      data: sim.data,
-      borderColor: sim.color || getNextColor(),
-      backgroundColor: sim.color ? `${sim.color}20` : `${getNextColor()}20`,
-      borderWidth: 3,
-      pointRadius: 2,
-      pointHoverRadius: 6,
-      tension: 0.4,
-      pointBackgroundColor: sim.color || getNextColor(),
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-    }));
-
-    return {
-      labels: baseLabels,
-      datasets,
-      chartType: 'comparison',
-      circuitParams: {
-        experimentType: 'comparison',
-        simulations: simList.map(s => s.circuitParams)
-      }
-    };
-  };
-
+  
   const getSimulationLabel = (simulation, index) => {
     const { circuitParams } = simulation;
     if (circuitParams.resistance && circuitParams.capacitance) {
@@ -210,17 +171,19 @@ function AppContent() {
         <div className="dashboard-header">
           <div className="dashboard-header-content">
             <div>
-              <h1 className="dashboard-title">
+              <h1 className="text-h1 dashboard-title">
                 {activeExperiment === 'rc' && 'RC Circuit Analysis'}
                 {activeExperiment === 'rl' && 'RL Circuit Analysis'}
+                {activeExperiment === 'rlc' && 'RLC Circuit Analysis'}
                 {activeExperiment === 'ohms' && "Ohm's Law Calculator"}
                 {activeExperiment === 'voltage-divider' && 'Voltage Divider Analysis'}
               </h1>
-              <p className="dashboard-subtitle">
+              <p className="text-label-secondary dashboard-subtitle">
                 {activeExperiment === 'rc' && 'Analyze resistor-capacitor charging and discharging behavior'}
                 {activeExperiment === 'rl' && 'Study resistor-inductor current buildup and decay'}
+                {activeExperiment === 'rlc' && 'Analyze resistor-inductor-capacitor oscillatory behavior'}
                 {activeExperiment === 'ohms' && 'Calculate current using Ohm\'s Law: I = V/R'}
-                {activeExperiment === 'voltage-divider' && 'Design and analyze voltage division circuits'}
+                {activeExperiment === 'voltage-divider' && 'Voltage Divider - Live Simulation'}
               </p>
             </div>
             <div className="compare-controls">
@@ -239,38 +202,19 @@ function AppContent() {
                 </button>
               )}
             </div>
-          </div>
         </div>
         
-        <div className="dashboard-grid">
-          <div className="dashboard-card input-card">
-            <InputPanel 
-              onSimulate={handleSimulation} 
-              experimentType={activeExperiment}
-              isSimulating={isSimulating}
+        <div className="visualization-section spacing-md-top">
+          <div className="circuit-section breathable">
+            <CircuitDiagram 
+              circuitType={activeExperiment}
+              parameters={circuitParams}
             />
-            {successMessage && (
-              <div className="success-message">
-                {successMessage}
-              </div>
-            )}
           </div>
           
-          <div className="dashboard-card results-card">
-            <div className="results-grid">
-              <div className="result-item">
-                <GraphPanel data={simulationData} />
-              </div>
-              <div className="result-item">
-                <ExplanationPanel params={circuitParams} />
-              </div>
-              <div className="result-item">
-                {/* <ExportControls 
-                  simulationData={simulationData} 
-                  explanationText={circuitParams}
-                /> */}
-              </div>
-            </div>
+          <div className="graph-section spacing-md-top breathable">
+            <GraphPanel data={simulationData} />
+          </div>
             <ResultsSummary 
               simulationData={simulationData} 
               compareMode={compareMode}
