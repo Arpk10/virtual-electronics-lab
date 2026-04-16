@@ -21,33 +21,7 @@ const ExplanationPanel = ({ params }) => {
 
   const { experimentType } = defaultParams;
 
-  const getAIEnhancedContent = (baseContent, experimentType) => {
-    if (!isAIMode) return baseContent;
-
-    const aiSections = getAISections(experimentType);
-    return (
-      <>
-        {baseContent}
-        {aiSections}
-      </>
-    );
-  };
-
-  const getAISections = (type) => {
-    switch (type) {
-      case 'rc':
-        return getRCAISections();
-      case 'rl':
-        return getRLAISections();
-      case 'ohms':
-        return getOhmsAISections();
-      case 'voltage-divider':
-        return getVoltageDividerAISections();
-      default:
-        return null;
-    }
-  };
-
+  
   const formatValue = (value, unit) => {
     if (unit === 'Ω' && value >= 1000) {
       return `${(value / 1000).toFixed(1)}kΩ`;
@@ -81,29 +55,7 @@ const ExplanationPanel = ({ params }) => {
     return `${current.toFixed(3)}A`;
   };
 
-  const getExplanationContent = () => {
-    switch (experimentType) {
-      case 'rc':
-        return getAIEnhancedContent(getRCExplanation(), 'rc');
-      case 'rl':
-        return getAIEnhancedContent(getRLExplanation(), 'rl');
-      case 'rlc':
-        return getAIEnhancedContent(getRLCExplanation(), 'rlc');
-      case 'opamp':
-        return getAIEnhancedContent(getOpAmpExplanation(), 'opamp');
-      case 'bjt':
-        return getAIEnhancedContent(getBJTExplanation(), 'bjt');
-      case 'ohms':
-        return getAIEnhancedContent(getOhmsExplanation(), 'ohms');
-      case 'voltage-divider':
-        return getAIEnhancedContent(getVoltageDividerExplanation(), 'voltage-divider');
-      case 'digital':
-        return getAIEnhancedContent(getDigitalExplanation(), 'digital');
-      default:
-        return getAIEnhancedContent(getRCExplanation(), 'rc');
-    }
-  };
-
+  
   const getRCExplanation = () => {
     const { resistance, capacitance, simulationType, timeConstant, V0, maxTime } = params;
     
@@ -398,17 +350,6 @@ const ExplanationPanel = ({ params }) => {
     );
   };
 
-  return (
-    <div className="explanation-panel">
-      <h2>Experiment Explanation</h2>
-      <AIExplanationToggle 
-        circuitType={params.type || 'rc'}
-        simulationResults={params}
-        onExplanationGenerated={(explanation, level) => {
-          setAiExplanation(explanation);
-          setAiLevel(level);
-        }}
-      />
   const getOpAmpExplanation = () => {
     const { resistance, gain, configuration, simulationType, V0 } = params;
     
@@ -623,20 +564,24 @@ const ExplanationPanel = ({ params }) => {
 
   const getExplanationContent = () => {
     switch (params.type) {
-      case 'ohm':
-        return getOhmExplanation();
-      case 'voltage-divider':
-        return getVoltageDividerExplanation();
+      case 'rc':
+        return getRCExplanation();
+      case 'rl':
+        return getRLExplanation();
       case 'rlc':
         return getRLCExplanation();
       case 'op-amp':
         return getOpAmpExplanation();
       case 'bjt':
         return getBJTExplanation();
+      case 'ohms':
+        return getOhmsExplanation();
+      case 'voltage-divider':
+        return getVoltageDividerExplanation();
       case 'digital':
         return getDigitalExplanation();
       default:
-        return <></>;
+        return getRCExplanation();
     }
   };
 
