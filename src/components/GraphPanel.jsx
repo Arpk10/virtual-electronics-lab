@@ -32,6 +32,18 @@ ChartJS.register(
 const GraphPanel = ({ data }) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Early return guard for null data to prevent crashes
+  if (!data) {
+    return (
+      <div className="graph-panel">
+        <h2>Experiment Results</h2>
+        <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6b7280' }}>
+          Loading experiment data...
+        </div>
+      </div>
+    );
+  }
+
   // ✅ Safe fallback data structure for null/undefined data
   const safeData = data || {
     chartType: 'voltage',
