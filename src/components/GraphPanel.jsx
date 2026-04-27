@@ -162,9 +162,12 @@ const GraphPanel = ({ data }) => {
       }
     };
     
-    options = { ...options, ...config };
-    
-    return { chartData: adaptedChartData, options };
+    const mergedOptions = { ...options, ...config };
+
+    return {
+      chartData: adaptedChartData,
+      options: mergedOptions
+    };
   };
   
   const getChartTitle = (chartType) => {
