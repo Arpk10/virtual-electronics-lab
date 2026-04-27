@@ -32,8 +32,8 @@ ChartJS.register(
 const GraphPanel = ({ data }) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // ✅ Safe fallback data
-  const chartData = data || {
+  // ✅ Safe fallback data structure for null/undefined data
+  const safeData = data || {
     chartType: 'voltage',
     circuitParams: {},
     labels: ['0s', '0.5s', '1s', '1.5s', '2s', '2.5s', '3s'],
@@ -49,9 +49,15 @@ const GraphPanel = ({ data }) => {
   };
 
   const getChartConfig = () => {
-    // Use the new visualization layer to adapt data
-    const adaptedChartData = adaptToChartData(chartData) || { labels: [], datasets: [] };
-    let options = getChartOptions(chartData?.chartType, chartData?.circuitParams) || {};
+    try {
+      // Use the new visualization layer to adapt data
+      const adaptedChartData = adaptToChartData(safeData) || { labels: [], datasets: [] };
+      
+      // Ensure safe defaults for chart parameters
+      const chartType = safeData?.chartType || 'voltage';
+      const circuitParams = safeData?.circuitParams || {};
+      
+      let options = getChartOptions(chartType, circuitParams) || {};
     
     // Ensure base object safety before mutation
     options = options || {};
@@ -89,7 +95,7 @@ const GraphPanel = ({ data }) => {
     // Add title
     options.plugins.title = {
       display: true,
-      text: getChartTitle(chartData?.chartType || 'voltage'),
+      text: getChartTitle(chartType),
       font: { size: 20, weight: '700' },
       color: '#111827',
       padding: { top: 10, bottom: 20 }
@@ -121,10 +127,25 @@ const GraphPanel = ({ data }) => {
       ...(config || {})
     };
 
-    return {
-      chartData: adaptedChartData,
-      options: mergedOptions
-    };
+      return {
+        chartData: adaptedChartData,
+        options: mergedOptions
+      };
+    } catch (error) {
+      // Fallback configuration if visualization calls fail
+      console.warn('GraphPanel: Error in getChartConfig, using fallback', error);
+      return {
+        chartData: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, position: 'top' },
+            tooltip: { enabled: true }
+          }
+        }
+      };
+    }
   };
 
   const getChartTitle = (chartType) => {
@@ -139,9 +160,10 @@ const GraphPanel = ({ data }) => {
 
   const { chartData: configData, options } = getChartConfig();
 
+  // Determine chart component using safeData
   const ChartComponent =
-    chartData?.chartType === 'static' ||
-    chartData?.chartType === 'comparison'
+    safeData?.chartType === 'static' ||
+    safeData?.chartType === 'comparison'
       ? Bar
       : Line;
 
@@ -150,8 +172,8 @@ const GraphPanel = ({ data }) => {
       <h2>Experiment Results</h2>
 
       <ResultSummaryCards
-        circuitType={chartData?.circuitParams?.experimentType || 'voltage-divider'}
-        parameters={chartData?.circuitParams || {}}
+        circuitType={safeData?.circuitParams?.experimentType || safeData?.chartType || 'voltage-divider'}
+        parameters={safeData?.circuitParams || {}}
       />
 
       <div style={{ height: '400px' }}>
