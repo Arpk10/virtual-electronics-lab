@@ -47,13 +47,21 @@ const GraphPanel = ({ data }) => {
       borderWidth: 2,
       tension: 0.4,
       fill: true
-    }]
+    }],
+    chartType: 'voltage',
+    circuitParams: {}
   };
 
   const getChartConfig = () => {
     // Use the new visualization layer to adapt data
-    const adaptedChartData = adaptToChartData(chartData);
-    const options = getChartOptions(chartData.chartType, chartData.circuitParams);
+    const adaptedChartData = adaptToChartData(chartData) || { labels: [], datasets: [] };
+    let options = getChartOptions(chartData?.chartType, chartData?.circuitParams) || {};
+    
+    // Ensure options object is properly initialized
+    options.plugins = options.plugins || {};
+    options.plugins.legend = options.plugins.legend || {};
+    options.plugins.tooltip = options.plugins.tooltip || {};
+    options.plugins.title = options.plugins.title || {};
     
     // Add animation settings
     options.animation = {
@@ -84,7 +92,7 @@ const GraphPanel = ({ data }) => {
     // Add title
     options.plugins.title = {
       display: true,
-      text: getChartTitle(data.chartType),
+      text: getChartTitle(chartData?.chartType || 'voltage'),
       font: { size: 20, weight: '700' },
       color: '#111827',
       padding: { top: 10, bottom: 20 }
@@ -162,7 +170,10 @@ const GraphPanel = ({ data }) => {
       }
     };
     
-    const mergedOptions = { ...options, ...config };
+    const mergedOptions = {
+      ...(options || {}),
+      ...(config || {})
+    };
 
     return {
       chartData: adaptedChartData,
@@ -193,7 +204,7 @@ const GraphPanel = ({ data }) => {
   const { chartData: configData, options } = getChartConfig();
   
   // Determine which chart component to use based on chart type
-  const ChartComponent = (data?.chartType === 'static' || data?.chartType === 'comparison') ? Bar : Line;
+  const ChartComponent = (chartData?.chartType === 'static' || chartData?.chartType === 'comparison') ? Bar : Line;
 
   return (
     <div className={`graph-panel fade-in premium-spacing ${isUpdating ? 'updating' : ''}`}>
@@ -218,7 +229,7 @@ const GraphPanel = ({ data }) => {
       {/* Result Summary Cards */}
       <div className="spacing-md-bottom">
         <ResultSummaryCards 
-          circuitType={chartData?.circuitParams?.experimentType || 'voltage-divider'}
+          circuitType={chartData?.circuitParams?.experimentType || chartData?.chartType || 'voltage-divider'}
           parameters={chartData?.circuitParams || {}}
         />
       </div>
