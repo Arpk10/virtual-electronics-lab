@@ -31,25 +31,21 @@ ChartJS.register(
 
 const GraphPanel = ({ data }) => {
   const [isUpdating, setIsUpdating] = useState(false);
-  
-  // Always show content, use default data if none provided
+
+  // ✅ Safe fallback data
   const chartData = data || {
+    chartType: 'voltage',
+    circuitParams: {},
     labels: ['0s', '0.5s', '1s', '1.5s', '2s', '2.5s', '3s'],
     datasets: [{
       label: 'Voltage (V)',
       data: [0, 4, 6.4, 7.8, 8.6, 9.1, 9.4],
       borderColor: 'var(--color-voltage)',
       backgroundColor: 'var(--color-voltage-bg)',
-      pointBackgroundColor: 'var(--color-voltage)',
-      pointBorderColor: 'var(--color-voltage-dark)',
-      pointHoverBackgroundColor: 'var(--color-voltage-dark)',
-      pointHoverBorderColor: 'var(--color-voltage)',
       borderWidth: 2,
       tension: 0.4,
       fill: true
-    }],
-    chartType: 'voltage',
-    circuitParams: {}
+    }]
   };
 
   const getChartConfig = () => {
@@ -57,7 +53,8 @@ const GraphPanel = ({ data }) => {
     const adaptedChartData = adaptToChartData(chartData) || { labels: [], datasets: [] };
     let options = getChartOptions(chartData?.chartType, chartData?.circuitParams) || {};
     
-    // Ensure options object is properly initialized
+    // Ensure base object safety before mutation
+    options = options || {};
     options.plugins = options.plugins || {};
     options.plugins.legend = options.plugins.legend || {};
     options.plugins.tooltip = options.plugins.tooltip || {};
@@ -76,9 +73,9 @@ const GraphPanel = ({ data }) => {
       },
     };
     
-    // Enhance legend styling
+    // Enhance legend styling with safe spread
     options.plugins.legend = {
-      ...options.plugins.legend,
+      ...(options.plugins?.legend || {}),
       labels: {
         font: { size: 16, weight: '600' },
         color: '#374151',
@@ -98,9 +95,9 @@ const GraphPanel = ({ data }) => {
       padding: { top: 10, bottom: 20 }
     };
     
-    // Enhance tooltip styling
+    // Enhance tooltip styling with safe spread
     options.plugins.tooltip = {
-      ...options.plugins.tooltip,
+      ...(options.plugins?.tooltip || {}),
       backgroundColor: 'rgba(17, 24, 39, 0.95)',
       titleColor: '#ffffff',
       bodyColor: '#ffffff',
@@ -112,64 +109,13 @@ const GraphPanel = ({ data }) => {
       titleFont: { size: 14, weight: '600' },
       bodyFont: { size: 13 },
     };
-    
-    // Apply semantic voltage colors
+
+    // config layer
     const config = {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            color: '#374151',
-            font: {
-              size: 12
-            }
-          }
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#ffffff',
-          bodyColor: '#ffffff',
-          borderColor: '#3b82f6',
-          borderWidth: 1
-        }
-      },
-      scales: {
-        x: {
-          type: 'linear',
-          position: 'bottom',
-          title: {
-            display: true,
-            text: 'Time (s)',
-            color: '#374151'
-          },
-          grid: {
-            color: '#e5e7eb'
-          },
-          ticks: {
-            color: '#6b7280'
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Voltage (V)',
-            color: '#374151'
-          },
-          grid: {
-            color: '#e5e7eb'
-          },
-          ticks: {
-            color: '#6b7280'
-          }
-        }
-      }
     };
-    
+
     const mergedOptions = {
       ...(options || {}),
       ...(config || {})
@@ -180,63 +126,35 @@ const GraphPanel = ({ data }) => {
       options: mergedOptions
     };
   };
-  
+
   const getChartTitle = (chartType) => {
     switch (chartType) {
-      case 'voltage':
-        return 'Voltage vs Time';
-      case 'current':
-        return 'Current vs Time';
-      case 'static':
-        return 'Calculation Results';
-      case 'comparison':
-        return 'Comparison Results';
-      default:
-        return 'Simulation Results';
+      case 'voltage': return 'Voltage vs Time';
+      case 'current': return 'Current vs Time';
+      case 'static': return 'Calculation Results';
+      case 'comparison': return 'Comparison Results';
+      default: return 'Simulation Results';
     }
   };
 
-  const triggerUpdateAnimation = () => {
-    setIsUpdating(true);
-    setTimeout(() => setIsUpdating(false), 300);
-  };
-
   const { chartData: configData, options } = getChartConfig();
-  
-  // Determine which chart component to use based on chart type
-  const ChartComponent = (chartData?.chartType === 'static' || chartData?.chartType === 'comparison') ? Bar : Line;
+
+  const ChartComponent =
+    chartData?.chartType === 'static' ||
+    chartData?.chartType === 'comparison'
+      ? Bar
+      : Line;
 
   return (
-    <div className={`graph-panel fade-in premium-spacing ${isUpdating ? 'updating' : ''}`}>
-      <div className="spacing-md-bottom">
-        <h2 className="text-h2">Experiment Results</h2>
-        
-        {/* Professional Signals */}
-        <div className="professional-signals">
-          <div className="signal-badge signal-realtime">
-            <div className="signal-indicator"></div>
-            Real-time simulation
-          </div>
-          <div className="signal-badge signal-precision">
-            <div className="signal-indicator"></div>
-            Engineering precision
-          </div>
-        </div>
-      </div>
-      
-      <div className="divider"></div>
-      
-      {/* Result Summary Cards */}
-      <div className="spacing-md-bottom">
-        <ResultSummaryCards 
-          circuitType={chartData?.circuitParams?.experimentType || chartData?.chartType || 'voltage-divider'}
-          parameters={chartData?.circuitParams || {}}
-        />
-      </div>
-      
-      <div className="divider-thick"></div>
-      
-      <div className="chart-container fade-in">
+    <div className={`graph-panel ${isUpdating ? 'updating' : ''}`}>
+      <h2>Experiment Results</h2>
+
+      <ResultSummaryCards
+        circuitType={chartData?.circuitParams?.experimentType || 'voltage-divider'}
+        parameters={chartData?.circuitParams || {}}
+      />
+
+      <div style={{ height: '400px' }}>
         <ChartComponent data={configData} options={options} />
       </div>
     </div>
